@@ -52,7 +52,6 @@
     </div>
 
     <div class="container">
-        <h1>Guests</h1>
         <?php
             // ... (your existing PHP code)
                // we want to check if the submit button has been clicked (in our case, it is named Query)
@@ -141,23 +140,37 @@
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                // Check if the user already liked the movie to avoid duplicate entries
-                $stmtCheckLike = $conn->prepare("SELECT * FROM Likes WHERE uemail = :userEmail AND mpid = :movieId");
-                $stmtCheckLike->bindParam(':userEmail', $userEmail, PDO::PARAM_STR);
-                $stmtCheckLike->bindParam(':movieId', $movieId, PDO::PARAM_INT);
-                $stmtCheckLike->execute();
+                // Check if the user exists in the 'User' table
+                $stmtCheckUser = $conn->prepare("SELECT * FROM User WHERE email = :userEmail");
+                $stmtCheckUser->bindParam(':userEmail', $userEmail, PDO::PARAM_STR);
+                $stmtCheckUser->execute();
 
-                if ($stmtCheckLike->rowCount() == 0) {
-                    // User has not liked the movie yet, proceed to insert into 'Likes' table
-                    $stmtInsertLike = $conn->prepare("INSERT INTO Likes (uemail, mpid) VALUES (:userEmail, :movieId)");
-                    $stmtInsertLike->bindParam(':userEmail', $userEmail, PDO::PARAM_STR);
-                    $stmtInsertLike->bindParam(':movieId', $movieId, PDO::PARAM_INT);
-                    $stmtInsertLike->execute();
+                // Fetch the result
+                $userResult = $stmtCheckUser->fetch(PDO::FETCH_ASSOC);
 
-                    echo "<p>Thank you for liking the movie!</p>";
+                if ($userResult !== false) {
+                    // User exists in the 'User' table, proceed with checking likes
+                    // Check if the user already liked the movie to avoid duplicate entries
+                    $stmtCheckLike = $conn->prepare("SELECT * FROM Likes WHERE uemail = :userEmail AND mpid = :movieId");
+                    $stmtCheckLike->bindParam(':userEmail', $userEmail, PDO::PARAM_STR);
+                    $stmtCheckLike->bindParam(':movieId', $movieId, PDO::PARAM_INT);
+                    $stmtCheckLike->execute();
+
+                    if ($stmtCheckLike->rowCount() == 0) {
+                        // User has not liked the movie yet, proceed to insert into 'Likes' table
+                        $stmtInsertLike = $conn->prepare("INSERT INTO Likes (uemail, mpid) VALUES (:userEmail, :movieId)");
+                        $stmtInsertLike->bindParam(':userEmail', $userEmail, PDO::PARAM_STR);
+                        $stmtInsertLike->bindParam(':movieId', $movieId, PDO::PARAM_INT);
+                        $stmtInsertLike->execute();
+
+                        echo "<p>Thank you for liking the movie!</p>";
+                    } else {
+                        // User has already liked the movie
+                        echo "<p>You have already liked this movie.</p>";
+                    }
                 } else {
-                    // User has already liked the movie
-                    echo "<p>You have already liked this movie.</p>";
+                    // User does not exist in the 'User' table
+                    echo "<p>Error: User does not exist. Cannot like the movie.</p>";
                 }
             } catch(PDOException $e) {
                 echo "Error: " . $e->getMessage();
@@ -166,6 +179,8 @@
                 $conn = null;
             }
         }
+
+
         // Check if 'view_movies' query parameter is present
         if(isset($_GET['query']) && $_GET['query'] == 'view_movies') {
             try {
