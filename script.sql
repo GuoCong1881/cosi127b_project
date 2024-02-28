@@ -1,7 +1,7 @@
 CREATE TABLE MotionPicture (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  rating DECIMAL(2, 1),
+  rating DECIMAL(3, 1),
   production VARCHAR(255),
   budget INT,
   PRIMARY KEY (id)
@@ -40,7 +40,7 @@ CREATE TABLE People (
   name VARCHAR(255) NOT NULL,
   nationality VARCHAR(255),
   dob DATE,
-  gender VARCHAR(255),
+  gender ENUM('Male', 'Female', 'Other'),
   PRIMARY KEY (id)
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE Award (
   award_year INT,
   FOREIGN KEY (mpid) REFERENCES MotionPicture(id),
   FOREIGN KEY (pid) REFERENCES People(id),
-  PRIMARY KEY (mpid, pid, award_name)
+  PRIMARY KEY (mpid, pid, award_name, award_year)
 );
 
 CREATE TABLE Genre (
@@ -76,5 +76,5 @@ CREATE TABLE Location (
   city VARCHAR(255),
   country VARCHAR(255),
   FOREIGN KEY (mpid) REFERENCES MotionPicture(id),
-  PRIMARY KEY (mpid)
+  PRIMARY KEY (mpid, zip)
 );
