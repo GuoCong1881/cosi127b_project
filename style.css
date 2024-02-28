@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#user-like {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#results {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#results th, #results td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: left;
+}
+
+#results tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

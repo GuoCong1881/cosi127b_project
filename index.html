@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Database App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Movie Database App</h1>
+    <div class="buttons">
+        <button onclick="getMovies()">View All Movies</button>
+        <button onclick="getActors()">View All Actors</button>
+        <br>
+        <div id="user-like">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email">
+            <button onclick="likeMovie()">Like Movie</button>
+        </div>
+    </div>
+    <div id="results"></div>
+    <script src="script.js"></script>
+</body>
+</html>

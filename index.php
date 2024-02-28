@@ -19,7 +19,7 @@
         <h3 style="text-align:center">Connecting Front-End to MySQL DB</h3><br>
     </div>
     <div class="container">
-        <form id="ageLimitForm" method="post" action="your_php_script.php">
+        <form id="ageLimitForm" method="post" action="index.php">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Enter minimum age" name="inputAge" id="inputAge">
                 <div class="input-group-append">
