@@ -3,7 +3,7 @@ CREATE TABLE MotionPicture (
   name VARCHAR(255) NOT NULL,
   rating DECIMAL(3, 1),
   production VARCHAR(255),
-  budget INT,
+  budget BIGINT,
   PRIMARY KEY (id)
 );
 
@@ -14,11 +14,11 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Likes (
-  uemail VARCHAR(255) NOT NULL,
-  mpid INT NOT NULL,
-  FOREIGN KEY (uemail) REFERENCES User(email),
-  FOREIGN KEY (mpid) REFERENCES MotionPicture(id),
-  PRIMARY KEY (uemail, mpid)
+    mpid INT NOT NULL,
+    uemail VARCHAR(255) NOT NULL,
+    FOREIGN KEY (uemail) REFERENCES User(email),
+    FOREIGN KEY (mpid) REFERENCES MotionPicture(id),
+    PRIMARY KEY (uemail, mpid)
 );
 
 CREATE TABLE Movie (
@@ -40,7 +40,7 @@ CREATE TABLE People (
   name VARCHAR(255) NOT NULL,
   nationality VARCHAR(255),
   dob DATE,
-  gender ENUM('Male', 'Female', 'Other'),
+  gender ENUM('M', 'F'),
   PRIMARY KEY (id)
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE Award (
   mpid INT NOT NULL,
   pid INT NOT NULL,
   award_name VARCHAR(255) NOT NULL,
-  award_year INT,
+  award_year YEAR,
   FOREIGN KEY (mpid) REFERENCES MotionPicture(id),
   FOREIGN KEY (pid) REFERENCES People(id),
   PRIMARY KEY (mpid, pid, award_name, award_year)
